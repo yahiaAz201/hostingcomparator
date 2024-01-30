@@ -30,7 +30,7 @@ const add = async (req, res) => {
     if (!req.file)
       return res.send({ success: false, error: "Thumbnail is required" });
 
-    const thumbnail = "http://192.168.1.6:3001" + "/img/" + req.file.filename;
+    const thumbnail = "/img/" + req.file.filename;
 
     let post = new Posts({ ...req.body });
     post.thumbnail = thumbnail;
@@ -65,8 +65,7 @@ const edit = async (req, res) => {
 
       fs.unlinkSync(old_image_path);
 
-      updateFields["thumbnail"] =
-        "http://192.168.1.6:3001" + "/img/" + req.file.filename;
+      updateFields["thumbnail"] = "/img/" + req.file.filename;
     }
     const newPost = await Posts.findOneAndUpdate(
       { _id: id },
