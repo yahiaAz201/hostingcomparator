@@ -44,11 +44,16 @@ app.use("/api/admins", adminsRoute);
 
 app.use("/api/posts", postsRoute);
 
+// Handle client-side routing
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
+});
+
 try {
   await mongoose.connect(DB_URI);
   app.listen(PORT, () => {
-    console.log(`Example app listening on port `, PORT);
+    console.log(`Server is listening on port`, PORT);
   });
 } catch (error) {
-  console.log("Unable to connect to database");
+  console.error("Unable to connect to the database:", error);
 }
