@@ -63,7 +63,9 @@ const edit = async (req, res) => {
         old_image_name
       );
 
-      fs.unlinkSync(old_image_path);
+      try {
+        fs.unlinkSync(old_image_path);
+      } catch (err) {}
 
       updateFields["thumbnail"] = "/img/" + req.file.filename;
     }
