@@ -9,7 +9,7 @@ const get = async (req, res) => {
       package: features,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -30,7 +30,7 @@ const add = async (req, res) => {
       package: feature,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -67,7 +67,7 @@ const edit = async (req, res) => {
       package: newFeature,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -83,7 +83,7 @@ const remove = async (req, res) => {
 
     res.send({ success: true, package: deleted_features });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });

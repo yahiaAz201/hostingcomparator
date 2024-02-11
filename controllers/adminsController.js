@@ -9,7 +9,7 @@ const get = async (req, res) => {
       package: admins,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       package: error.message,
     });
@@ -20,7 +20,9 @@ const add = async (req, res) => {
     const doc = _.pick(req.body, ["name", "email", "password", "role"]);
     const isExist = await Admins.findOne({ email: doc?.email });
     if (isExist)
-      return res.send({ success: false, error: "This user already Exist" });
+      return res
+        .status(409)
+        .send({ success: false, error: "This user already Exist" });
 
     let admin = new Admins(doc);
     admin = await admin.save();
@@ -30,7 +32,7 @@ const add = async (req, res) => {
       package: admin,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -41,7 +43,9 @@ const edit = async (req, res) => {
     const id = req.params.id;
     const isExist = await Admins.findOne({ _id: id });
     if (!isExist)
-      return res.send({ success: false, error: "No admin found by this id" });
+      return res
+        .status(404)
+        .send({ success: false, error: "No admin found by this id" });
 
     const updateFields = _.pick(req.body, [
       "name",
@@ -64,7 +68,7 @@ const edit = async (req, res) => {
       package: newAdmin,
     });
   } catch (error) {
-    res.send({ success: false, error: error.message });
+    res.status(500).send({ success: false, error: error.message });
   }
 };
 
@@ -78,7 +82,7 @@ const remove = async (req, res) => {
 
     res.send({ success: true, package: deleted_admins });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });

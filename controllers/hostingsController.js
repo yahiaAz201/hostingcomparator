@@ -17,7 +17,7 @@ const get = async (req, res) => {
       populate,
     });
   } catch (error) {
-    res.send({ success: false, error: error.message });
+    res.status(500).send({ success: false, error: error.message });
   }
 };
 
@@ -37,7 +37,7 @@ const add = async (req, res) => {
       package: hosting,
     });
   } catch (error) {
-    res.send({ success: false, error: error.message });
+    res.status(500).send({ success: false, error: error.message });
   }
 };
 
@@ -63,7 +63,7 @@ const edit = async (req, res) => {
       package: newHosting,
     });
   } catch (error) {
-    res.send({ success: false, error: error.message });
+    res.status(500).send({ success: false, error: error.message });
   }
 };
 
@@ -76,7 +76,7 @@ const remove = async (req, res) => {
 
     res.send({ success: true, package: deleted_hostings });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });

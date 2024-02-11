@@ -26,7 +26,7 @@ const login = async (req, res) => {
 
     res.send({ success: true, package: token });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).status(500).send({
       success: false,
       error: error.message,
     });
@@ -50,7 +50,7 @@ const signup = async (req, res) => {
     const token = jwt.sign(_.pick(user, ["email"]), JWT_SECRET_TOKEN);
     res.send({ success: true, package: token, user: user });
   } catch (error) {
-    res.status(500).send({
+    res.status(500).status(500).send({
       success: false,
       error: error.message,
     });

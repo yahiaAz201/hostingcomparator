@@ -10,6 +10,10 @@ const hostingsSchema = new mongoose.Schema({
     ref: "HostingTypes",
     required: true,
   },
+  affiliateLink: {
+    type: String,
+    required: false,
+  },
   features: [
     {
       type: {

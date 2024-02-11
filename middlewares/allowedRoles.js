@@ -8,14 +8,12 @@ const JWT_SECRET_TOKEN = process.env.JWT_SECRET_TOKEN;
 
 function allowedRoles(roles) {
   return async function (req, res, next) {
-    return next();
     const token = req.headers["token"];
     const admins = await Admins.find();
     let user;
 
     if (admins.length > 0) {
-      if (!token)
-        return res.send({ success: false, error: "no token provided" });
+      if (!token) return res.status(400).send("no token provided");
 
       try {
         user = jwt.verify(token, JWT_SECRET_TOKEN);
@@ -27,7 +25,7 @@ function allowedRoles(roles) {
       const allowedRoles = roles.map((role) => role.toUpperCase());
       const allowed = allowedRoles.includes(userRole);
       if (!allowed) {
-        return res.send({
+        return res.status(401).send({
           success: false,
           error: "You are not authorized to perform this action.",
         });

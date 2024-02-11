@@ -20,6 +20,14 @@ const featuresSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  prefix: {
+    type: String,
+    default: "",
+  },
+  suffix: {
+    type: String,
+    default: "",
+  },
 });
 
 featuresSchema.pre("validate", function (next) {

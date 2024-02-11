@@ -1,5 +1,12 @@
+import path from "path";
+import url from "url";
+import fs from "fs";
+
 import _ from "underscore";
 import HostingTypes from "../models/HostingTypes.js";
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const get = async (req, res) => {
   try {
@@ -9,7 +16,7 @@ const get = async (req, res) => {
       package: hostingTypes,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -28,6 +35,8 @@ const add = async (req, res) => {
       });
 
     let hostingType = new HostingTypes(doc);
+    const image = "/img/" + req.file.filename;
+    hostingType.image = image;
     hostingType = await hostingType.save();
 
     res.send({
@@ -35,7 +44,7 @@ const add = async (req, res) => {
       package: hostingType,
     });
   } catch (error) {
-    res.send({
+    res.status(500).status(500).send({
       success: false,
       error: error.message,
     });
@@ -59,6 +68,23 @@ const edit = async (req, res) => {
 
     const updateFields = _.pick(req.body, ["name"]);
 
+    if (req.file) {
+      if (hostingType.image) {
+        const old_image_name =
+          hostingType.image.split("/")[hostingType.image.split("/").length - 1];
+
+        const old_image_path = path.resolve(
+          __dirname,
+          "../uploads",
+          old_image_name
+        );
+
+        if (fs.existsSync(old_image_path)) fs.unlinkSync(old_image_path);
+      }
+
+      updateFields["image"] = "/img/" + req.file.filename;
+    }
+
     const newHostingType = await HostingTypes.findOneAndUpdate(
       { _id: id },
       { $set: updateFields },
@@ -70,7 +96,7 @@ const edit = async (req, res) => {
       package: newHostingType,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -96,7 +122,7 @@ const remove = async (req, res) => {
 
     res.send({ success: true, package: deleted_hostingType });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });

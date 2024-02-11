@@ -18,7 +18,7 @@ const get = async (req, res) => {
 
     res.send({ success: true, package: posts });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -37,7 +37,7 @@ const add = async (req, res) => {
     post = await post.save();
     res.send({ success: true, package: post });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -63,9 +63,7 @@ const edit = async (req, res) => {
         old_image_name
       );
 
-      try {
-        fs.unlinkSync(old_image_path);
-      } catch (err) {}
+      if (fs.existsSync(old_image_path)) fs.unlinkSync(old_image_path);
 
       updateFields["thumbnail"] = "/img/" + req.file.filename;
     }
@@ -80,7 +78,7 @@ const edit = async (req, res) => {
       package: newPost,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
@@ -109,7 +107,7 @@ const remove = async (req, res) => {
 
     res.send({ success: true, package: deleted_post });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       success: false,
       error: error.message,
     });
