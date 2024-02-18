@@ -5,9 +5,9 @@ import allowedRoles from "../middlewares/allowedRoles.js";
 
 const featuresRoute = Router();
 
-featuresRoute.get("/", featuresController.get);
+featuresRoute.get("/:id", featuresController.get);
 featuresRoute.post(
-  "/",
+  "/:id",
   allowedRoles(["ADMIN", "BLOGGER"]),
   featuresController.add
 );
@@ -17,7 +17,7 @@ featuresRoute.put(
   featuresController.edit
 );
 featuresRoute.delete(
-  "/",
+  "/:id",
   allowedRoles(["ADMIN", "BLOGGER"]),
   featuresController.remove
 );

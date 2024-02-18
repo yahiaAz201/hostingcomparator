@@ -25,9 +25,13 @@ const add = async (req, res) => {
   try {
     const doc = req.body;
 
+    console.log(doc);
+
     const isExist = await Hostings.findOne({ name: doc?.name });
-    if (isExist?.hostingType == doc.hostingType)
-      return res.send({ success: false, error: "Hosting already exist" });
+    if (isExist)
+      return res
+        .status(400)
+        .send({ success: false, error: "Hosting already exist" });
 
     let hosting = new Hostings(doc);
     hosting = await hosting.save();
